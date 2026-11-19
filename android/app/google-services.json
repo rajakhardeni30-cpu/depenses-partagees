@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64131966521",
+    "project_id": "depenses-partagees-405f2",
+    "storage_bucket": "depenses-partagees-405f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64131966521:android:d64003418af2de2cc28fe8",
+        "android_client_info": {
+          "package_name": "com.example.depenses_partagees"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJwCXzmfiCff8uoJcM_xX9eISWmJKzoeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
