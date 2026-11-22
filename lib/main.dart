@@ -1,9 +1,9 @@
 import 'package:depenses_partagees/login_page.dart';
+import 'package:depenses_partagees/groupes_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
-import 'login_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -58,6 +58,14 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Depenses partagees'),
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.group),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => GroupesPage()));
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
