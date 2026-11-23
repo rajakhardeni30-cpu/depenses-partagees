@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'groupe_detail_page.dart';
 
 class GroupesPage extends StatefulWidget {
   const GroupesPage({super.key});
@@ -62,6 +63,9 @@ class _GroupesPageState extends State<GroupesPage> {
                   leading: const CircleAvatar(backgroundColor: Colors.purple, child: Icon(Icons.group, color: Colors.white)),
                   title: Text(data['nom'] ?? ''),
                   subtitle: Text('Cree par: ${data['createur'] ?? ''}'),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => GroupeDetailPage(groupeId: docs[index].id, groupeNom: data['nom'])));
+                  },
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () => FirebaseFirestore.instance.collection('groupes').doc(docs[index].id).delete(),
