@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'groupes_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
-
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final nomController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  String error = '';
 
-  Future<void> creerCompte() async {
+  Future<void> register() async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Compte créé !')),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => GroupesPage()),
       );
-      Navigator.pop(context);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur : $e')),
-      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        error = e.message ?? 'Erreur';
+      });
     }
   }
 
@@ -35,20 +35,15 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Créer un compte'),
+        title: const Text('Creer un compte'),
+        backgroundColor: Colors.purple,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: nomController,
-              decoration: const InputDecoration(
-                labelText: 'Nom',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 15),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(
@@ -56,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             TextField(
               controller: passwordController,
               obscureText: true,
@@ -65,19 +60,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            if (error.isNotEmpty)
+              Text(error, style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: creerCompte,
-                child: const Text('Créer un compte'),
+                onPressed: register,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Creer'),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Déjà un compte ? Se connecter'),
             ),
           ],
         ),
