@@ -17,9 +17,12 @@ class _GroupesPageState extends State<GroupesPage> {
     final user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance.collection('groupes').add({
       'nom': nomController.text,
-      'createur': user?.email ?? 'inconnu',
-      'membres': [user?.email ?? ''],
-      'date': DateTime.now(),
+      'devise': 'TND',
+      'createur': user?.uid ?? '',
+      'createurEmail': user?.email ?? 'inconnu',
+      'membres': [user?.uid ?? ''],
+      'membresEmails': [user?.email ?? ''],
+      'creeLe': DateTime.now(),
     });
     nomController.clear();
     Navigator.pop(context);
@@ -49,7 +52,7 @@ class _GroupesPageState extends State<GroupesPage> {
       appBar: AppBar(title: const Text('Mes Groupes'), backgroundColor: Colors.purple, foregroundColor: Colors.white),
       floatingActionButton: FloatingActionButton(onPressed: showAddDialog, backgroundColor: Colors.purple, child: const Icon(Icons.add, color: Colors.white)),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('groupes').where('membres', arrayContains: user?.email).snapshots(),
+        stream: FirebaseFirestore.instance.collection('groupes').where('membres', arrayContains: user?.uid).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
           final docs = snapshot.data!.docs;
@@ -62,7 +65,7 @@ class _GroupesPageState extends State<GroupesPage> {
                 child: ListTile(
                   leading: const CircleAvatar(backgroundColor: Colors.purple, child: Icon(Icons.group, color: Colors.white)),
                   title: Text(data['nom'] ?? ''),
-                  subtitle: Text('Cree par: ${data['createur'] ?? ''}'),
+                  subtitle: Text('Cree par: ${data['createurEmail'] ?? ''}'),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => GroupeDetailPage(groupeId: docs[index].id, groupeNom: data['nom'])));
                   },
