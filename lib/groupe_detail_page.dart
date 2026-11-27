@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'ticket_ai_service.dart';
+import 'profil_screen.dart';
 
 class GroupeDetailPage extends StatefulWidget {
   final String groupeId;
@@ -28,7 +29,7 @@ class _GroupeDetailPageState extends State<GroupeDetailPage> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     payeurId = FirebaseAuth.instance.currentUser?.email ?? FirebaseAuth.instance.currentUser?.uid ?? '';
   }
 
@@ -310,6 +311,7 @@ class _GroupeDetailPageState extends State<GroupeDetailPage> with SingleTickerPr
                 Tab(text: 'Soldes'),
                 Tab(text: 'Remboursements'),
                 Tab(text: 'Statistiques'),
+                Tab(text: 'Profil'),
               ],
             ),
           ),
@@ -392,6 +394,7 @@ class _GroupeDetailPageState extends State<GroupeDetailPage> with SingleTickerPr
                       children: parCat.entries.map((e) => Card(child: ListTile(title: Text(e.key), trailing: Text(formatMontant(e.value))))).toList(),
                     );
                   }),
+                  const ProfilScreen(),
                 ],
               );
             },
